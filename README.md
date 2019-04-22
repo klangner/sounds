@@ -1,6 +1,6 @@
 # Sound synthesis 
 
-[![Build Status](https://travis-ci.org/klangner/dsp.svg?branch=master)](https://travis-ci.org/klangner/sounds)
+[![Build Status](https://travis-ci.org/klangner/sounds.svg?branch=master)](https://travis-ci.org/klangner/sounds)
 
 Command line application for sound synthesis written in Rust.
 
