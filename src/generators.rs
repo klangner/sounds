@@ -54,26 +54,27 @@ pub fn sine(sample_rate: u32, freq: f32) -> SignalGen<impl Fn(f32) -> f32> {
     SignalGen::new(sample_rate, move |i| (i*w).sin())
 }
 
-/// Real value periodic triangle signal (with period of 1 second).
+/// Periodic triangle signal.
 pub fn triangle(sample_rate: u32, freq: f32) -> SignalGen<impl Fn(f32) -> f32> {
    let w = 2.0 * freq;
    SignalGen::new(sample_rate, move |i| (i*w) % 2.0 - 1.0)
 }
 
-///// Real value periodic square signal (with period of 1 second).
-//pub fn square(freq: f64) -> SignalGen<impl Fn(f64) -> Complex64> {
-//    let w = freq;
-//    SignalGen::new(move |i| {
-//        let a = w * i % 1.;
-//        let b = if a < -0.5 || (a > 0.0 && a < 0.5) {
-//            1.0
-//        } else {
-//            -1.0
-//        };
-//        Complex::new(b, 0.)
-//    })
-//}
-//
+/// Periodic square signal.
+pub fn square(sample_rate: u32, freq: f32) -> SignalGen<impl Fn(f32) -> f32> {
+   let w = freq;
+   SignalGen::new(
+       sample_rate,
+       move |i| {
+        let a = w * i % 1.;
+        if a < -0.5 || (a > 0.0 && a < 0.5) {
+            1.0
+        } else {
+            -1.0
+        }
+    })
+}
+
 ///// A chirp is a signal in which frequency increases with time.
 //pub fn chirp(start_freq: f64, end_freq: f64, time: f64) -> SignalGen<impl Fn(f64) -> Complex64> {
 //    let slope = (end_freq - start_freq) / time;
@@ -112,8 +113,16 @@ mod tests {
 
     #[test]
     fn test_triangle() {
-        let mut gen = sine(44_000, 440f32);
+        let mut gen = triangle(44_000, 440f32);
         let sample = gen.next_sample();
-        assert_eq!(sample.floor(), 0.0);
+        assert_eq!(sample.floor(), -1.0);
     }
+
+    #[test]
+    fn test_square() {
+        let mut gen = square(44_000, 440f32);
+        let sample = gen.next_sample();
+        assert_eq!(sample.ceil(), 1.0);
+    }
+    
 }
