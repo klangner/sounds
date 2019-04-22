@@ -1,8 +1,16 @@
-# Sound synthesis 
+# Sound synthesis library
 
 [![Build Status](https://travis-ci.org/klangner/sounds.svg?branch=master)](https://travis-ci.org/klangner/sounds)
+[![Crates.io](https://img.shields.io/crates/v/sounds.svg)](https://crates.io/crates/sounds) 
+[![Crates.io](https://img.shields.io/crates/l/sounds.svg)](https://github.com/klangner/sounds/blob/master/LICENSE-MIT) 
+[![docs.rs](https://docs.rs/sounds/badge.svg)](https://docs.rs/sounds/)
 
-Command line application for sound synthesis written in Rust.
+
+**sounds is an early-stage open-source project**. It means that API can change at any time.
+If you think that this library can help you, then let me know. We can discuss future direction and try to stabilize the API.
+
+The folder [examples](https://github.com/klangner/sounds/tree/master/examples) contains demo programs which shows how to use this library.
+
 
 
 # Features

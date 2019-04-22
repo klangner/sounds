@@ -1,8 +1,9 @@
 [package]
-name = "sounds"
+name = "play"
 version = "0.1.0"
 authors = ["klangner <klangner@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-
+sounds = { path = "../.." }
+cpal = "0.8"
