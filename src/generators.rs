@@ -16,6 +16,8 @@
 //! ```
 
 use std::f32::consts::PI;
+use rand;
+use rand::distributions::{Normal, Distribution};
 
 
 /// Signal Generator. 
@@ -88,14 +90,14 @@ pub fn square(sample_rate: u32, freq: f32) -> SignalGen<impl Fn(f32) -> f32> {
 //        }
 //    })
 //}
-//
-///// A real noise (without imaginary part)
-//pub fn noise(std: f64) -> SignalGen<impl Fn(f64) -> Complex64> {
-//    let normal = Normal::new(0.0, std);
-//    SignalGen::new(move |_| {
-//        Complex::new(normal.sample(&mut rand::thread_rng()), 0.0)
-//    })
-//}
+
+/// A real noise (without imaginary part)
+pub fn noise(sample_rate: u32) -> SignalGen<impl Fn(f32) -> f32> {
+   let normal = Normal::new(0.0, 0.3);
+   SignalGen::new(sample_rate, move |_| {
+       normal.sample(&mut rand::thread_rng()) as f32
+   })
+}
 
 /// ------------------------------------------------------------------------------------------------
 /// Module unit tests
