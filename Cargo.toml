@@ -1,7 +1,13 @@
 [package]
 name = "sounds"
 version = "0.1.0"
-authors = ["klangner <klangner@gmail.com>"]
+authors = ["Krzysztof Langner <klangner@gmail.com>"]
+description = "Sound synthesis generators"
+keywords = ["audio", "sound", "synthesis"]
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/klangner/sounds"
+homepage = "https://github.com/klangner/sounds"
+documentation = "https://docs.rs/sounds"
 edition = "2018"
 
 [dependencies]

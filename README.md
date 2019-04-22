@@ -17,7 +17,7 @@ The folder [examples](https://github.com/klangner/sounds/tree/master/examples) c
    
 ## Signal generators
 
-  * [ ] Sinusoid
+  * [x] Sinusoid
   * [ ] Triangle
   * [ ] Square
   * [ ] Chirp
