@@ -1,4 +1,4 @@
-//! # Sounds
+//! # Sound synthesis library
 //!
 //! sound synthesis
 //!

@@ -1,49 +1,65 @@
-//! Signal generators
+//! # Signal generators
+//!
+//! Those generators can be used as a sound source.
+//! 
+//! ## Example
+//!
+//! Here we will create simple sinusoidal generator with the frequency of 440Hz.
+//! And next we will use it to generate few samples
+//!
+//! ```rust
+//! use sounds::generators::sine;
+//! 
+//! let mut gen = sine(44_000, 440.0);
+//! let sample1 = gen.next_sample();
+//! let sample2 = gen.next_sample();
+//! ```
+
 use std::f32::consts::PI;
 
 
-/// Trait implemented by each Signal Generator
-pub trait SignalGen {
-
-    /// Return generator next sample
-    fn next_sample(&mut self) -> f32;
-}
-
-
-
-/// Sinusoidal generator
-pub struct SineGen {
+/// Signal Generator. 
+pub struct SignalGen<F>
+where
+    F: Fn(f32) -> f32,
+{
     sample_rate: f32,
-    freq: f32,
     sample_clock: f32,
+    signal: F,
 }
 
-impl SineGen {
-    /// Create Sinusoidal generator with a given frequency
-    pub fn new(sample_rate: u32, freq: f32) -> SineGen {
-        SineGen{
-            sample_rate: sample_rate as f32,
-            freq,
-            sample_clock: 0.0,
+impl<F> SignalGen<F>
+where
+    F: Fn(f32) -> f32,
+{
+    /// Create a new generator from provided function
+    pub fn new(sample_rate: u32, signal: F) -> SignalGen<F> {
+        SignalGen { 
+            sample_rate: sample_rate as f32, 
+            sample_clock: 0.0, 
+            signal 
         }
     }
-}
 
-impl SignalGen for SineGen {
-
-    fn next_sample(&mut self) -> f32 {
+    /// Generate next signal sample.
+    pub fn next_sample(&mut self) -> f32 {
         self.sample_clock = (self.sample_clock + 1.0) % self.sample_rate;
-        (self.sample_clock * self.freq * 2.0 * PI / self.sample_rate).sin()
+        (self.signal)(self.sample_clock / self.sample_rate)
     }
-
 }
 
-///// Real value periodic triangle signal (with period of 1 second).
-//pub fn triangle(freq: f64) -> SignalGen<impl Fn(f64) -> Complex64> {
-//    let w = 2.0 * freq;
-//    SignalGen::new(move |i| Complex::new((w * (i + 0.5)) % 2. - 1., 0.))
-//}
-//
+/// Create generator of sinusoidal signal with the given frequency in Hz.
+pub fn sine(sample_rate: u32, freq: f32) -> SignalGen<impl Fn(f32) -> f32> {
+    let w = 2.0 * PI * freq;
+    SignalGen::new(sample_rate, move |i| (i*w).sin())
+}
+
+/// Real value periodic triangle signal (with period of 1 second).
+pub fn triangle(sample_rate: u32, freq: f32) -> SignalGen<impl Fn(f32) -> f32> {
+   let w = 2.0 * freq;
+   SignalGen::new(sample_rate, move |i| (i*w) % 2.0 - 1.0)
+}
+
 ///// Real value periodic square signal (with period of 1 second).
 //pub fn square(freq: f64) -> SignalGen<impl Fn(f64) -> Complex64> {
 //    let w = freq;
@@ -89,9 +105,15 @@ mod tests {
 
     #[test]
     fn test_sine() {
-        let mut signal = SineGen::new(44_000, 440f32);
-        let sample = signal.next_sample();
+        let mut gen = sine(44_000, 440f32);
+        let sample = gen.next_sample();
         assert_eq!(sample.ceil(), 1.0);
     }
 
+    #[test]
+    fn test_triangle() {
+        let mut gen = sine(44_000, 440f32);
+        let sample = gen.next_sample();
+        assert_eq!(sample.floor(), 0.0);
+    }
 }

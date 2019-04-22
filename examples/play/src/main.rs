@@ -1,11 +1,11 @@
 use cpal;
-use sounds::generators::{SineGen, SignalGen};
+use sounds::generators::{triangle};
 
 
 fn play() {
     let device = cpal::default_output_device().expect("Failed to get default output device");
     let format = device.default_output_format().expect("Failed to get default output format");
-    let mut gen = SineGen::new(format.sample_rate.0, 440.0);
+    let mut gen = triangle(format.sample_rate.0, 440.0);
     let event_loop = cpal::EventLoop::new();
     let stream_id = event_loop.build_output_stream(&device, &format).unwrap();
 
