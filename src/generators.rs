@@ -16,8 +16,10 @@
 //! ```
 
 use std::f32::consts::PI;
+#[cfg(feature = "random")]
 use rand;
-use rand::distributions::{Normal, Distribution};
+#[cfg(feature = "random")]
+use rand_distr::{Normal, Distribution};
 
 
 /// Signal Generator. 
@@ -92,6 +94,7 @@ pub fn square(sample_rate: u32, freq: f32) -> SignalGen<impl Fn(f32) -> f32> {
 //}
 
 /// A real noise (without imaginary part)
+#[cfg(feature = "random")]
 pub fn noise(sample_rate: u32) -> SignalGen<impl Fn(f32) -> f32> {
    let normal = Normal::new(0.0, 0.3);
    SignalGen::new(sample_rate, move |_| {

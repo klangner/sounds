@@ -1,6 +1,6 @@
 [package]
 name = "sounds"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["Krzysztof Langner <klangner@gmail.com>"]
 description = "Sound synthesis generators"
 keywords = ["audio", "sound", "synthesis"]
@@ -8,7 +8,18 @@ license = "MIT OR Apache-2.0"
 repository = "https://github.com/klangner/sounds"
 homepage = "https://github.com/klangner/sounds"
 documentation = "https://docs.rs/sounds"
-edition = "2018"
+edition = "2021"
+
+[features]
+random = ["rand", "rand_distr"]
 
 [dependencies]
-rand = "0.6"
+anyhow = "1.0"
+rand = { version = "^0.8", optional = true }
+rand_distr = {version = "^0.4", optional = true }
+
+[dev-dependencies]
+cpal = "0.8"
+
+[[example]]
+name = "play"
